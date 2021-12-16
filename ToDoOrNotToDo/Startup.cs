@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using log4net;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using ToDoOrNotToDo.Helpers;
 using ToDoOrNotToDo.Repository;
 
@@ -32,7 +32,8 @@ namespace ToDoOrNotToDo
             });
 
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
-            services.AddSingleton<ITodoRepository, TodoRepository>();
+            services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped(factory => LogManager.GetLogger(GetType()));
             services.AddControllers();
         }
 

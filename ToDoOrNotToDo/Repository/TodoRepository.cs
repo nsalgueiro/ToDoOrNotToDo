@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using log4net;
 using MySql.Data.MySqlClient;
 using ToDoOrNotToDo.Helpers;
 using ToDoOrNotToDo.Models;
@@ -9,9 +10,14 @@ namespace ToDoOrNotToDo.Repository
     public class TodoRepository: ITodoRepository
     {
         private IDbConnectionFactory _dbConnectionFactory;
+        private readonly ILog _log;
 
-        public TodoRepository(IDbConnectionFactory dbConnectionFactory) =>
+        public TodoRepository(IDbConnectionFactory dbConnectionFactory, ILog log)
+        {
+
             _dbConnectionFactory = dbConnectionFactory;
+            _log = log;
+        }
 
 
         public void Delete(int id)
@@ -28,12 +34,12 @@ namespace ToDoOrNotToDo.Repository
                 var rowsUpdated = cmd.ExecuteNonQuery();
                 if (rowsUpdated >= 1)
                 {
-                    Console.WriteLine("{0} row(s) with id - {1} deleted successfully!",
+                    _log.InfoFormat("{0} row(s) with id - {1} deleted successfully!",
                         rowsUpdated, id);
                 }
                 else
                 {
-                    Console.WriteLine("Failed to delete row with id - {0}.", id);
+                    _log.InfoFormat("Failed to delete row with id - {0}.", id);
                 }
                 con.Close();
             }
@@ -47,6 +53,7 @@ namespace ToDoOrNotToDo.Repository
 
             using (MySqlConnection dbConnection = GetSqlConnection())
             {
+                _log.Info("Retrieving all records");
                 dbConnection.Open();
                 var query = "SELECT * FROM todos";
                 MySqlCommand cmd = new MySqlCommand(query, dbConnection);
@@ -119,12 +126,12 @@ namespace ToDoOrNotToDo.Repository
                 var rowsInserted = cmd.ExecuteNonQuery();
                 if (rowsInserted >= 1)
                 {
-                    Console.WriteLine("{0} row(s) with title - {1} - and status - {2} inserted successfully!",
+                    _log.InfoFormat("{0} row(s) with title - {1} - and status - {2} inserted successfully!",
                         rowsInserted, todo.Title, todo.Status);
                 }
                 else
                 {
-                    Console.WriteLine("Failed to insert row with title - {0} - and status - {1}.", todo.Title, todo.Status);
+                    _log.InfoFormat("Failed to insert row with title - {0} - and status - {1}.", todo.Title, todo.Status);
                 }
                 con.Close();
             }
@@ -147,12 +154,12 @@ namespace ToDoOrNotToDo.Repository
                 var rowsUpdated = cmd.ExecuteNonQuery();
                 if (rowsUpdated >= 1)
                 {
-                    Console.WriteLine("{0} row(s) with id - {1} title - {2} - and status - {3} updated successfully!",
+                    _log.InfoFormat("{0} row(s) with id - {1} title - {2} - and status - {3} updated successfully!",
                         rowsUpdated, id, todo.Title, todo.Status);
                 }
                 else
                 {
-                    Console.WriteLine("Failed to update row with title - {0} - and status - {1}.", todo.Title, todo.Status);
+                    _log.InfoFormat("Failed to update row with title - {0} - and status - {1}.", todo.Title, todo.Status);
                 }
                 con.Close();
             }
