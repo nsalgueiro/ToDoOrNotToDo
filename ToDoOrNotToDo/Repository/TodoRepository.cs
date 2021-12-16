@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using MySql.Data.MySqlClient;
+using ToDoOrNotToDo.Helpers;
 using ToDoOrNotToDo.Models;
 
 namespace ToDoOrNotToDo.Repository

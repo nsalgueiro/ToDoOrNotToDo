@@ -12,10 +12,12 @@
     <None Remove="Swashbuckle.AspNetCore.SwaggerUI" />
     <None Remove="Repository\" />
     <None Remove="MySql.Data" />
+    <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Repository\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
