@@ -1,8 +1,10 @@
 ﻿using System.Data;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
 namespace ToDoOrNotToDo.Helpers
 {
+
     public interface IDbConnectionFactory
     {
         IDbConnection CreateMysqlConnection();
@@ -11,9 +13,17 @@ namespace ToDoOrNotToDo.Helpers
 
     public class DbConnectionFactory : IDbConnectionFactory
     {
+        private readonly IConfiguration Config;
+
+        public DbConnectionFactory(IConfiguration configuration)
+        {
+            Config = configuration;
+        }
+
         public IDbConnection CreateMysqlConnection()
         {
-            string connectionString = "server=localhost;database=todoschema;user=todouser;password=todopassword";
+            var connectionString = Config["ConnectionStrings:MySqlConnection"];
+
             return new MySqlConnection(connectionString);
         }
 
